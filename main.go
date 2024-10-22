@@ -22,7 +22,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request){
 	if r.URL.Path != "/hello"{
 		http.Error(w, "404 Not Found", http.StatusNotFound)
 		return
-	}
+	} 
 	if r.Method != "GET"{
 		http.Error(w, "Methof is not Supported", http.StatusNotFound)
 		return
@@ -33,8 +33,9 @@ func helloHandler(w http.ResponseWriter, r *http.Request){
 
 func main() {
 	fileServer := http.FileServer(http.Dir("/static"))
-	http.Handle("/form", formHandler)
-	http.Handle("/hello", helloHandler)
+	http.Handle("/", fileServer)
+	http.HandleFunc("/form", formHandler)
+	http.HandleFunc("/hello", helloHandler)
 
 	fmt.Printf("Starting server at 8080\n")
 	if err := http.ListenAndServe(":8080", nil); err != nil{
